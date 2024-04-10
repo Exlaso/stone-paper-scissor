@@ -1,56 +1,67 @@
-const Option = ["rock","paper","scissor"];
-const getImageByOption =(options)=>{
-  switch(options){
+const chooseUserChoice = (choice) => {
+  const userSelected = document.getElementById("userSelected");
+  
+  console.log(userSelected);
+  switch (choice) {
     case "rock":
-      return "rock.png"
+      userSelected.src = "rock.png";
+      break;
     case "paper":
-      return "paper.png"
-    case "scissor":
-      return "scissors.png"
+      userSelected.src = "paper.png";
+      break;
+    case "scissors":
+      userSelected.src = "scissors.png";
+      break;
+
+    default:
+      break;
   }
-}
-const chooseUserChoice = (userSelectedOption) =>{
-console.log("user",userSelectedOption);
-const ComputerGenratedOption = Option[Math.floor(Math.random()*3)]
-const ResultOutput = document.getElementById("result")
-const userSelectedElement = document.getElementById("userSelected")
-const ComputerSelectedElement = document.getElementById("computerSelected")
-userSelectedElement.getImageByOption(userSelectedOption)
-userSelectedElement.getImageByOption(ComputerGenratedOption)
-if (userSelectedOption == ComputerGenratedOption) {
-  console.log("tie");
-  ResultOutput.innerText = "Tie!!";
-  ResultOutput.style.color = "black"
-}else{
-  let UserWin = true;
-  if(userSelectedOption == "rock"){
-    UserWin = ComputerGenratedOption == "paper"
-    ? false
-    : ComputerGenratedOption == "scissor"
-    ? true
-    :false;
-  }else if(userSelectedOption == "paper"){
-    UserWin = 
-    ComputerGenratedOption == "scissor"
-    ? false
-    : ComputerGenratedOption == "rock"
-    ?true
-    :false;
-  }else{
-    UserWin = 
-    ComputerGenratedOption == "rock"
-    ? false
-    : ComputerGenratedOption == "paper"
-    ? true
-    :false;
-      }
-    console.log("User Win",UserWin);
-    if(UserWin){
-      ResultOutput.innerText = "User Win";
-      ResultOutput.style.color = "green"
-    }else{
-      ResultOutput.innerText = "User Lose";
-      ResultOutput.style.color = "Red"
-    } 
+  StartComputerChoosing();
+};
+let cScore = 0;
+let uScore = 0;
+const Options = ["rock.png", "paper.png", "scissors.png"];
+const StartComputerChoosing = () => {
+  let duration = 100;
+  const interval = setInterval(() => {
+    console.log(Options.at(Math.floor(Math.random() * Options.length)));
+    document.getElementById("computerSelected").src = Options.at(
+      Math.floor(Math.random() * Options.length)
+    );
+  }, duration);
+  setTimeout(() => {
+    clearInterval(interval);
+    displayResult();
+  }, 3000);
+};
+
+const displayResult = () => {
+  const userSelected = document.getElementById("userSelected").src;
+  const computerSelected = document.getElementById("computerSelected").src;
+  const result = document.getElementById("result");
+  const computerScore = document.getElementById("Computerscore");
+  const userScore = document.getElementById("Userscore");
+
+  if (userSelected === computerSelected) {
+    result.innerHTML = "Tie!!";
+  } else {
+    let userWin = true;
+    if (userSelected === "Rock") {
+      //paper scissors
+      userWin = computerSelected === "Paper" ? false : true;
+    } else if (userSelected === "Paper") {
+      //scissors , rock
+      userWin = computerSelected === "Scissors" ? false : true;
+    } else {
+      userWin = computerSelected === "Rock" ? false : true;
     }
+    result.innerHTML = userWin ? "You Win" : "You Lose";
+    if (userWin) {
+      uScore++;
+      userScore.innerHTML = uScore;
+    } else {
+      cScore++;
+      computerScore.innerHTML = cScore;
+    }
+  }
 };
